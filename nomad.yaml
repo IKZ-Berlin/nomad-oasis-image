@@ -1,0 +1,1369 @@
+services:
+  api_host: 'nomad-test.support.ikz-berlin.de'
+  api_base_path: '/nomad-oasis'
+  upload_limit: 1000
+
+oasis:
+  is_oasis: true
+  uses_central_user_management: false
+
+north:
+  enabled: true
+  jupyterhub_crypt_key: '978bfb2e13a8448a253c629d8dd84ff89587f30e635b753153960930cad9d36d'
+  tools:
+    include:
+      - voila
+      - jupyter
+    options:
+      voila:
+        short_description: A jupyter webapp container with voila
+        description: A jupyter hub webapp container with voila installed.
+        image: gitlab-registry.mpcdf.mpg.de/nomad-lab/north/voila:latest
+        path_prefix: voila/render
+        with_path: true
+        mount_path: /home/jovyan
+        file_extensions:
+          - ipynb
+        maintainer:
+          - name: Michael Götte
+            email: michael.goette@helmholtz-berlin.de
+      # gwyddion:
+        # short_description: A NORTH container with gwyddion
+        # description: A NORTH container with gwyddion for AFM analysis.
+        # image: gitlab-registry.mpcdf.mpg.de/nomad-lab/nomad-remote-tools-hub/gwyddion:latest
+        # privileged=True,
+        # mount_path='/config',
+        # maintainer:
+          # - name: Sebastian Brueckner
+          #  email: sebastian.brueckner@ikz-berlin.de
+
+meta:
+  deployment: 'oasis'
+  deployment_url: 'nomad-test.support.ikz-berlin.de/nomad-oasis/api'
+  maintainer_email: 'edv@ikz-berlin.de'
+
+mongo:
+    db_name: nomad_oasis_v1
+
+elastic:
+    entries_index: nomad_oasis_entries_v1
+    materials_index: nomad_oasis_materials_v1
+
+plugins:
+  # We only include our schema here. Without the explicit include, all plugins will be
+  # loaded. Many build in plugins require more dependencies. Install nomad-lab[parsing]
+  # to make all default plugins work.
+  include:
+    - 'schemas/nomad_material_processing'
+    - 'schemas/nomad_measurements'
+    - 'parsers/nomad_measurements/xrd'
+    - 'schemas/nomad_analysis'
+    - 'schemas/RTGSIMS'
+    - 'parsers/hall_lakeshore/measurement'
+    - 'parsers/hall_lakeshore/instrument'
+    - 'parsers/laytec_epitt'
+    - 'schemas/ikz'
+    - 'schemas/ikz/pld'
+    - 'parsers/ikz/czochralski'
+    - 'parsers/ikz/movpe_2'
+    - 'parsers/ikz/movpe_1_deposition_control'
+    - 'parsers/ikz/movpe_1_constant_parameters'
+    - 'parsers/ikz/movpe_substrates'
+    - 'parsers/ikz/directional_solidification'
+  exclude:
+    - 'parsers/nexus'
+
+  options:
+    schemas/RTGSIMS:  
+      python_package: nomadschemartgsims
+    schemas/nomad_material_processing:
+      python_package: nomad_material_processing
+    schemas/nomad_measurements:
+      python_package: nomad_measurements
+    parsers/nomad_measurements/xrd:
+      python_package: nomad_measurements.xrd.parser
+    schemas/nomad_analysis:
+      python_package: nomad_analysis
+    parsers/hall_lakeshore/measurement:
+      python_package: hall.measurement_parser
+    parsers/hall_lakeshore/instrument:
+      python_package: hall.instrument_parser
+    parsers/laytec_epitt:
+      python_package: laytec_epitt
+    schemas/ikz:
+      python_package: ikz_plugin
+    schemas/ikz/pld:
+      python_package: ikz_plugin.pld
+    parsers/ikz/czochralski:
+      python_package: ikz_plugin.czochralski
+    parsers/ikz/movpe_2:
+      python_package: ikz_plugin.movpe.movpe2_growth_parser
+    parsers/ikz/movpe_1_deposition_control:
+      python_package: ikz_plugin.movpe.movpe1_growth_parser.deposition_control
+    parsers/ikz/movpe_1_constant_parameters:
+      python_package: ikz_plugin.movpe.movpe1_growth_parser.constant_parameters
+    parsers/ikz/movpe_substrates:
+     python_package: ikz_plugin.movpe.substrate_parser
+    parsers/ikz/directional_solidification:
+      python_package: ikz_plugin.directional_solidification
+ui:
+  apps:
+    # Configures which apps to show. Note that the app for 'entries' (which
+    # corresponds to searching all entries) has to be included at the moment.
+    include:
+      - 'pld_app'
+      - 'eln'
+      - 'activities'
+      - 'samples'
+      - 'solarcells'
+      - 'entries'
+    # Configures a new app for samples
+    options:
+      pld_app:
+        label: PLD Layers
+        filters:
+          include:
+            - '*#ikz_plugin.pld.schema.*'
+        # Path used in the URL, must be unique
+        path: 'ikz_plugin/pld'
+        # Used to categorize apps in the explore menu
+        category: 'Experiment'
+        # Brief description used in the app menu
+        description: 'Search for layers made by PLD'
+        # Longer description that can also use markdown
+        readme: 'This app is for the analysis of PLD data.'
+        # Controls which columns are shown in the results table
+        columns:
+          selected:
+            - entry_name
+            - results.material.elements
+            - data.process_conditions.number_of_pulses#ikz_plugin.pld.schema.IKZPLDLayer
+            - data.process_conditions.pressure#ikz_plugin.pld.schema.IKZPLDLayer
+            - data.process_conditions.laser_energy#ikz_plugin.pld.schema.IKZPLDLayer
+            - data.process_conditions.growth_temperature#ikz_plugin.pld.schema.IKZPLDLayer
+            - data.process_conditions.laser_repetition_rate#ikz_plugin.pld.schema.IKZPLDLayer
+            - data.process_conditions.sample_to_target_distance#ikz_plugin.pld.schema.IKZPLDLayer
+            - data.geometry.height#ikz_plugin.pld.schema.IKZPLDLayer
+          options:
+            entry_name:
+              label: 'Layer name'
+              align: 'left'
+            entry_type:
+              label: 'Entry type'
+              align: 'left'
+            upload_create_time:
+              label: 'Upload time'
+              align: 'left'
+            entry_create_time:
+              label: 'Entry time'
+              align: 'left'
+            authors:
+              label: 'Authors'
+              align: 'left'
+            results.material.elements:
+              label: 'Elements'
+              align: 'left'
+            data.process_conditions.number_of_pulses#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Number of pulses'
+              align: 'left'
+            data.process_conditions.pressure#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Pressure'
+              align: 'left'
+              unit: 'mbar'
+              format:
+                decimals: 2
+                mode: 'scientific'
+            data.process_conditions.laser_energy#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Laser energy'
+              align: 'left'
+              unit: 'mJ'
+              format:
+                decimals: 2
+                mode: 'scientific'
+            data.process_conditions.growth_temperature#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Growth temperature'
+              align: 'left'
+              unit: 'celsius'
+              format:
+                decimals: 2
+                mode: 'scientific'
+            data.process_conditions.laser_repetition_rate#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Laser repetition rate'
+              align: 'left'
+              unit: 'Hz'
+              format:
+                decimals: 2
+                mode: 'scientific'
+            data.process_conditions.sample_to_target_distance#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Sample to target distance'
+              align: 'left'
+              unit: 'mm'
+              format:
+                decimals: 2
+                mode: 'scientific'
+            data.geometry.height#ikz_plugin.pld.schema.IKZPLDLayer:
+              label: 'Layer thickness'
+              align: 'left'
+              unit: 'nm'
+              format:
+                decimals: 2
+                mode: 'scientific'
+        filters_locked:
+          section_defs.definition_qualified_name: ikz_plugin.pld.schema.IKZPLDLayer
+        filter_menus:
+          options:
+            material:
+              label: 'Material'
+              level: 0
+            elements:
+              label: 'Elements / Formula'
+              level: 1
+              size: 'xl'
+            eln:
+              label: 'Electronic Lab Notebook'
+              level: 0
+            custom_quantities:
+              label: 'User Defined Quantities'
+              level: 0
+              size: 'l'
+            author:
+              label: 'Author / Origin / Dataset'
+              level: 0
+              size: 'm'
+            metadata:
+              label: 'Visibility / IDs / Schema'
+              level: 0
+        dashboard:
+          widgets:
+          - type: histogram
+            showinput: true
+            autorange: false
+            nbins: 30
+            scale: linear
+            quantity: data.process_conditions.number_of_pulses#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 0
+              xl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 4
+                w: 12
+                y: 4
+                x: 12
+              md:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 0
+              sm:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 0
+          - type: histogram
+            showinput: true
+            autorange: false
+            nbins: 30
+            scale: linear
+            quantity: data.process_conditions.pressure#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 8
+              xl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 8
+              lg:
+                minH: 3
+                minW: 3
+                h: 4
+                w: 12
+                y: 8
+                x: 12
+              md:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 8
+              sm:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 3
+                x: 0
+          - type: histogram
+            showinput: true
+            autorange: false
+            nbins: 30
+            scale: linear
+            quantity: data.process_conditions.laser_energy#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 16
+              xl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 16
+              lg:
+                minH: 3
+                minW: 3
+                h: 4
+                w: 12
+                y: 16
+                x: 12
+              md:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 3
+                x: 0
+              sm:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 6
+                x: 0
+          - type: histogram
+            showinput: true
+            autorange: false
+            nbins: 30
+            scale: linear
+            quantity: data.process_conditions.growth_temperature#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 0
+                x: 24
+              xl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 3
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 4
+                w: 12
+                y: 20
+                x: 12
+              md:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 6
+                x: 0
+              sm:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 9
+                x: 0
+          - type: histogram
+            showinput: true
+            autorange: false
+            nbins: 30
+            scale: linear
+            quantity: data.process_conditions.laser_repetition_rate#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 3
+                x: 0
+              xl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 6
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 4
+                w: 12
+                y: 12
+                x: 12
+              md:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 9
+                x: 0
+              sm:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 12
+                x: 0
+          - type: histogram
+            showinput: true
+            autorange: false
+            nbins: 30
+            scale: linear
+            quantity: data.process_conditions.sample_to_target_distance#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 6
+                x: 0
+              xl:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 9
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 4
+                w: 12
+                y: 0
+                x: 12
+              md:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 12
+                x: 0
+              sm:
+                minH: 3
+                minW: 3
+                h: 3
+                w: 8
+                y: 15
+                x: 0
+          - type: scatterplot
+            autorange: true
+            size: 1000
+            color: data.process_conditions.sample_to_target_distance#ikz_plugin.pld.schema.IKZPLDLayer
+            y: data.geometry.height#ikz_plugin.pld.schema.IKZPLDLayer
+            x: data.process_conditions.number_of_pulses#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 0
+                x: 0
+              xl:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 0
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 7
+                w: 12
+                y: 10
+                x: 0
+              md:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 3
+                x: 8
+              sm:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 18
+                x: 0
+          - type: scatterplot
+            autorange: true
+            size: 1000
+            color: data.process_conditions.number_of_pulses#ikz_plugin.pld.schema.IKZPLDLayer
+            y: data.geometry.height#ikz_plugin.pld.schema.IKZPLDLayer
+            x: data.process_conditions.sample_to_target_distance#ikz_plugin.pld.schema.IKZPLDLayer
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 0
+                x: 0
+              xl:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 0
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 7
+                w: 12
+                y: 17
+                x: 0
+              md:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 9
+                x: 8
+              sm:
+                minH: 3
+                minW: 3
+                h: 6
+                w: 9
+                y: 24
+                x: 0
+          - type: periodictable
+            scale: linear
+            quantity: results.material.elements
+            layout:
+              xxl:
+                minH: 3
+                minW: 3
+                h: 9
+                w: 12
+                y: 0
+                x: 0
+              xl:
+                minH: 3
+                minW: 3
+                h: 9
+                w: 12
+                y: 0
+                x: 0
+              lg:
+                minH: 3
+                minW: 3
+                h: 10
+                w: 12
+                y: 0
+                x: 0
+              md:
+                minH: 3
+                minW: 3
+                h: 9
+                w: 12
+                y: 0
+                x: 0
+              sm:
+                minH: 3
+                minW: 3
+                h: 9
+                w: 12
+                y: 0
+                x: 0
+      eln:
+        label: 'All experiments'
+        path: 'eln'
+        resource: 'entries'
+        breadcrumb: 'ELN'
+        category: 'Experiment'
+        description: 'Search your experimental data'
+        help:
+          title: 'Experiments search'
+          content: 'This page allows you to search **experiments** within the HZB-NOMAD.'
+        # Configures search result columns
+        columns:
+          selected:
+            # - 'entry_name'
+            # - 'results.material.chemical_formula_hill'
+            - 'results.eln.methods'
+            - 'entry_create_time'
+            - 'entry_type'
+            # - 'upload_create_time'
+            - 'authors'
+          options:
+            entry_name:
+              label: 'Name'
+              align: 'left'
+            results.eln.methods:
+              label: 'Methods'
+              align: 'left'
+            results.material.chemical_formula_hill:
+              label: 'Formula'
+              align: 'left'
+            entry_type:
+              label: 'Entry type'
+              align: 'left'
+            upload_name:
+              label: 'Upload name'
+              align: 'left'
+            upload_id:
+              label: 'Upload id'
+              align: 'left'
+            upload_create_time:
+              label: 'Upload time'
+              align: 'left'
+            entry_create_time:
+              label: 'Entry time'
+              align: 'left'
+            authors:
+              label: 'Authors'
+              align: 'left'
+        # Configures search result rows
+        rows:
+          actions:
+            enabled: true
+          details:
+            enabled: true
+          selection:
+            enabled: true
+        # Which menus to show
+        filter_menus:
+          options:
+            material:
+              label: 'Material'
+              level: 0
+            elements:
+              label: 'Elements / Formula'
+              level: 1
+              size: 'xl'
+            eln:
+              label: 'Electronic Lab Notebook'
+              level: 0
+            custom_quantities:
+              label: 'User Defined Quantities'
+              level: 0
+              size: 'l'
+            author:
+              label: 'Author / Origin / Dataset'
+              level: 0
+              size: 'm'
+            metadata:
+              label: 'Visibility / IDs / Schema'
+              level: 0
+            optimade:
+              label: 'Optimade'
+              level: 0
+              size: 'm'
+        # Configures a default, non-mutable filters that are applied to the
+        # data to pre-filter results from all entries
+        filters_locked:
+          quantities: 'data'
+        dashboard:
+          widgets:
+            # - type: 'periodictable'
+            #   scale: 'linear'
+            #   quantity: 'results.material.elements'
+            #   layout:
+            #     xxl:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 13
+            #       y: 0
+            #       x: 0
+            #     xl:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     lg:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     md:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     sm:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 16
+            #       x: 0
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              quantity: 'authors.name'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              # label: 'Measurement | Processes'
+              quantity: 'results.eln.methods'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              # label: 'Sample and Batch IDs'
+              quantity: 'results.eln.lab_ids'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+      activities:
+        label: 'Measurements | Processes'
+        path: 'activities'
+        resource: 'entries'
+        breadcrumb: 'Measurements | Processes'
+        category: 'Experiment'
+        description: 'Search your measurements and processes'
+        help:
+          title: 'Experiments search'
+          content: 'This page allows you to search **measurements** and **processes**.'
+        # Configures search result columns
+        columns:
+          selected:
+            # - 'entry_name'
+            # - 'results.material.chemical_formula_hill'
+            - 'results.eln.methods'
+            - 'entry_create_time'
+            - 'entry_type'
+            # - 'upload_create_time'
+            - 'authors'
+          options:
+            entry_name:
+              label: 'Name'
+              align: 'left'
+            results.eln.methods:
+              label: 'Methods'
+              align: 'left'
+            results.material.chemical_formula_hill:
+              label: 'Formula'
+              align: 'left'
+            entry_type:
+              label: 'Entry type'
+              align: 'left'
+            upload_name:
+              label: 'Upload name'
+              align: 'left'
+            upload_id:
+              label: 'Upload id'
+              align: 'left'
+            upload_create_time:
+              label: 'Upload time'
+              align: 'left'
+            entry_create_time:
+              label: 'Entry time'
+              align: 'left'
+            authors:
+              label: 'Authors'
+              align: 'left'
+        # Configures search result rows
+        rows:
+          actions:
+            enabled: true
+          details:
+            enabled: true
+          selection:
+            enabled: true
+        # Which menus to show
+        filter_menus:
+          options:
+            material:
+              label: 'Material'
+              level: 0
+            elements:
+              label: 'Elements / Formula'
+              level: 1
+              size: 'xl'
+            eln:
+              label: 'Electronic Lab Notebook'
+              level: 0
+            custom_quantities:
+              label: 'User Defined Quantities'
+              level: 0
+              size: 'l'
+            author:
+              label: 'Author / Origin / Dataset'
+              level: 0
+              size: 'm'
+            metadata:
+              label: 'Visibility / IDs / Schema'
+              level: 0
+            optimade:
+              label: 'Optimade'
+              level: 0
+              size: 'm'
+        # Configures a default, non-mutable filters that are applied to the
+        # data to pre-filter results from all entries
+        filters_locked:
+          quantities: 'results.eln.methods'
+        dashboard:
+          widgets:
+            # - type: 'periodictable'
+            #   scale: 'linear'
+            #   quantity: 'results.material.elements'
+            #   layout:
+            #     xxl:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 13
+            #       y: 0
+            #       x: 0
+            #     xl:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     lg:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     md:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     sm:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 16
+            #       x: 0
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              quantity: 'authors.name'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              # label: 'Measurement | Processes'
+              quantity: 'results.eln.methods'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 6
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              # label: 'Sample and Batch IDs'
+              quantity: 'results.eln.lab_ids'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+      samples:
+        label: 'Samples'
+        path: 'samples'
+        resource: 'entries'
+        breadcrumb: 'Samples'
+        category: 'Experiment'
+        description: 'Search your samples'
+        help:
+          title: 'Samples search'
+          content: 'This page allows you to search **samples**.'
+        # Configures search result columns
+        columns:
+          selected:
+            - 'entry_name'
+            # - 'results.material.chemical_formula_hill'
+            - 'results.eln.lab_ids'
+            # - 'results.eln.methods'
+            - 'entry_create_time'
+            - 'entry_type'
+            # - 'upload_create_time'
+            - 'authors'
+          options:
+            entry_name:
+              label: 'Name'
+              align: 'left'
+            results.eln.methods:
+              label: 'Methods'
+              align: 'left'
+            results.eln.lab_ids:
+              label: 'Sample IDs'
+              align: 'left'
+            results.material.chemical_formula_hill:
+              label: 'Formula'
+              align: 'left'
+            entry_type:
+              label: 'Entry type'
+              align: 'left'
+            upload_name:
+              label: 'Upload name'
+              align: 'left'
+            upload_id:
+              label: 'Upload id'
+              align: 'left'
+            upload_create_time:
+              label: 'Upload time'
+              align: 'left'
+            entry_create_time:
+              label: 'Entry time'
+              align: 'left'
+            authors:
+              label: 'Authors'
+              align: 'left'
+        # Configures search result rows
+        rows:
+          actions:
+            enabled: true
+          details:
+            enabled: true
+          selection:
+            enabled: true
+        # Which menus to show
+        filter_menus:
+          options:
+            material:
+              label: 'Material'
+              level: 0
+            elements:
+              label: 'Elements / Formula'
+              level: 1
+              size: 'xl'
+            eln:
+              label: 'Electronic Lab Notebook'
+              level: 0
+            custom_quantities:
+              label: 'User Defined Quantities'
+              level: 0
+              size: 'l'
+            author:
+              label: 'Author / Origin / Dataset'
+              level: 0
+              size: 'm'
+            metadata:
+              label: 'Visibility / IDs / Schema'
+              level: 0
+            optimade:
+              label: 'Optimade'
+              level: 0
+              size: 'm'
+        # Configures a default, non-mutable filters that are applied to the
+        # data to pre-filter results from all entries
+        filters_locked:
+          quantities: 'results.eln.lab_ids'
+        dashboard:
+          widgets:
+            # - type: 'periodictable'
+            #   scale: 'linear'
+            #   quantity: 'results.material.elements'
+            #   layout:
+            #     xxl:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 13
+            #       y: 0
+            #       x: 0
+            #     xl:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     lg:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     md:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 0
+            #       x: 0
+            #     sm:
+            #       minH: 8
+            #       minW: 12
+            #       h: 8
+            #       w: 12
+            #       y: 16
+            #       x: 0
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              quantity: 'authors.name'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 0
+            # - type: 'terms'
+            #   showinput: true
+            #   scale: 'linear'
+            #   # label: 'Measurement | Processes'
+            #   quantity: 'results.eln.methods'
+            #   layout:
+            #     xxl:
+            #       minH: 3
+            #       minW: 3
+            #       h: 6
+            #       w: 6
+            #       y: 0
+            #       x: 6
+            #     xl:
+            #       minH: 3
+            #       minW: 3
+            #       h: 6
+            #       w: 6
+            #       y: 0
+            #       x: 0
+            #     lg:
+            #       minH: 3
+            #       minW: 3
+            #       h: 6
+            #       w: 6
+            #       y: 0
+            #       x: 6
+            #     md:
+            #       minH: 3
+            #       minW: 3
+            #       h: 6
+            #       w: 6
+            #       y: 0
+            #       x: 6
+            #     sm:
+            #       minH: 3
+            #       minW: 3
+            #       h: 6
+            #       w: 6
+            #       y: 0
+            #       x: 6
+            - type: 'terms'
+              showinput: true
+              scale: 'linear'
+              # label: 'Sample and Batch IDs'
+              quantity: 'results.eln.lab_ids'
+              layout:
+                xxl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                xl:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                lg:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                md:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
+                sm:
+                  minH: 3
+                  minW: 3
+                  h: 6
+                  w: 6
+                  y: 0
+                  x: 12
