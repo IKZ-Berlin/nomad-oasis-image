@@ -1,7 +1,7 @@
-git+https://github.com/FAIRmat-NFDI/nomad-material-processing.git@fc97625e978e6f96fa699698b9cbe47e0c2d8d40 # main branch
+git+https://github.com/FAIRmat-NFDI/nomad-material-processing.git@1834f46dc2177cdd8816ef73caaacb4f83c57505 # main branch
 git+https://github.com/FAIRmat-NFDI/nomad-measurements.git@73f9a05ddb40200f8c81a413342c1a005f3d4813 # main branch
 git+https://github.com/FAIRmat-NFDI/nomad-analysis.git@278cfc6900211ce6991c5c2d19f4c48b690f01f8 # main branch
-git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@fdb645ba463924a76052a4e684d81c86a026ee49#subdirectory=IKZ_plugin
-git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@fdb645ba463924a76052a4e684d81c86a026ee49#subdirectory=Lakeshore_plugin
-git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@fdb645ba463924a76052a4e684d81c86a026ee49#subdirectory=RTG_SIMS
+git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ab8114771412a53acccedfdec27076c66fa0a91d#subdirectory=IKZ_plugin
+git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ab8114771412a53acccedfdec27076c66fa0a91d#subdirectory=Lakeshore_plugin
+git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ab8114771412a53acccedfdec27076c66fa0a91d#subdirectory=RTG_SIMS
 statsmodels
