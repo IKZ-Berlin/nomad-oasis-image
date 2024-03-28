@@ -4,7 +4,7 @@ An example repository for creating a nomad image with custom plugins.
 
 ## Deploying the image
 
-To deploy this NOMAD Oasis image you should follow the instructions on [nomad-lab.eu/prod/v1/docs/oasis/install.html](https://nomad-lab.eu/prod/v1/docs/oasis/install.html) but replace the Docker image in `docker-compose.yaml` with `ghcr.io/hampusnasstrom/nomad-example-image:main` for the services `worker`, `app`, `north`, and `logtransfer`.
+To deploy this NOMAD Oasis image you should follow the instructions on [nomad-lab.eu/prod/v1/docs/oasis/install.html](https://nomad-lab.eu/prod/v1/docs/oasis/install.html) but replace the Docker image in `docker-compose.yaml` with `ghcr.io/ikz-berlin/nomad-oasis-image:main` for the services `worker`, `app`, `north`, and `logtransfer`.
 
 Remember to also update the `nomad.yaml` config file to include the new plugins.
 
