@@ -1,4 +1,4 @@
-![docker image](https://github.com/hampusnasstrom/nomad-example-image/actions/workflows/docker-publish.yml/badge.svg)
+![docker image](https://github.com/IKZ-Berlin/nomad-oasis-image/actions/workflows/docker-publish.yml/badge.svg)
 # nomad-example-image
 An example repository for creating a NOMAD image with custom plugins.
 
@@ -14,7 +14,7 @@ Remember to also update the `nomad.yaml` config file to include the new plugins.
 - Make sure you have [docker](https://docs.docker.com/engine/install/) installed.
 Docker nowadays comes with `docker compose` build in. Prior, you needed to
 install the stand alone [docker-compose](https://docs.docker.com/compose/install/).
-- Download the modified configuration files [nomad-oasis.zip](https://github.com/hampusnasstrom/nomad-example-image/raw/main/nomad-oasis.zip) from this repository.
+- Download the modified configuration files [nomad-oasis.zip](https://github.com/IKZ-Berlin/nomad-oasis-image/raw/main/nomad-oasis.zip) from this repository.
 - Run the following commands (skip `chown` on MacOS and Windows computers)
 
 
@@ -37,7 +37,7 @@ systems docker gid. The user id 1000 is used as the nomad user inside all contai
 
 ## Adding a plugin
 
-To add a new plugin to the docker image you should add it to the [plugins.txt](https://github.com/hampusnasstrom/nomad-example-image/blob/main/plugins.txt) file.
+To add a new plugin to the docker image you should add it to the [plugins.txt](https://github.com/IKZ-Berlin/nomad-oasis-image/blob/main/plugins.txt) file.
 
 Here you can put either plugins distributed to PyPI, e.g.
 ```
