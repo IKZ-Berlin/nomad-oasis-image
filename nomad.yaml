@@ -71,7 +71,7 @@ plugins:
     - 'parsers/movpe_1_constant_parameters'
     - 'parsers/substrates_IKZ'
     - 'parsers/directional_solidification'
-    - 'schemas/uv_vis_nir_transmission'
+    - 'parsers/uv_vis_nir_transmission'
   exclude:
     - 'parsers/nexus'
 
@@ -110,8 +110,8 @@ plugins:
      python_package: ikz_plugin.movpe.substrate
     parsers/directional_solidification:
       python_package: ikz_plugin.directional_solidification
-    schemas/uv_vis_nir_transmission:
-      python_package: uv_vis_nir_transmission
+    parsers/uv_vis_nir_transmission:
+      python_package: uv_vis_nir_transmission.parser
 ui:
   apps:
     # Configures which apps to show. Note that the app for 'entries' (which
