@@ -5,5 +5,5 @@ git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ebb65e87
 git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ebb65e879d71fb70c3874de18c1490a99832dcc9#subdirectory=Lakeshore_plugin
 git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ebb65e879d71fb70c3874de18c1490a99832dcc9#subdirectory=RTG_SIMS
 git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@f53390fc1a4b80fa4d9e7ebbe4516f461f54ed61#subdirectory=transmission/transmission_plugin/uv_vis_nir_transmission_plugin
-git+https://github.com/IKZ-Berlin/ikz-fz-nomad-plugin.git
+# git+https://github.com/IKZ-Berlin/ikz-fz-nomad-plugin.git
 statsmodels
