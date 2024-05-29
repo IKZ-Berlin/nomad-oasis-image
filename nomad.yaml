@@ -72,6 +72,7 @@ plugins:
     - 'parsers/substrates_IKZ'
     - 'parsers/directional_solidification'
     - 'parsers/uv_vis_nir_transmission'
+    - 'schemas/fz_feed_rod'
   exclude:
     - 'parsers/nexus'
 
@@ -112,6 +113,8 @@ plugins:
       python_package: ikz_plugin.directional_solidification
     parsers/uv_vis_nir_transmission:
       python_package: uv_vis_nir_transmission.parser
+    schemas/fz_feed_rod:
+      python_package: nomad_ikz_fz
 ui:
   apps:
     # Configures which apps to show. Note that the app for 'entries' (which
