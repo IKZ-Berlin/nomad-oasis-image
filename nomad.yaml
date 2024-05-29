@@ -15,6 +15,9 @@ north:
       - voila
       - jupyter
     options:
+      jupyter:
+        short_description: A JupyterLab container with pre-installed NOMAD plugins.
+        image: gitlab-registry.mpcdf.mpg.de/nomad-lab/north/jupyter:plugins
       voila:
         short_description: A jupyter webapp container with voila
         description: A jupyter hub webapp container with voila installed.
