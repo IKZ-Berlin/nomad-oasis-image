@@ -68,7 +68,7 @@ plugins:
     - 'schemas/RTGSIMS'
     # - 'parsers/hall_lakeshore/measurement'
     # - 'parsers/hall_lakeshore/instrument'
-    # - 'parsers/laytec_epitt'
+    - 'parsers/laytec_epitt'
     # - 'schemas/ikz'
     # - 'schemas/ikz/pld'
     # - 'schemas/characterization_IKZ'
@@ -92,7 +92,7 @@ plugins:
     - 'ikz_plugin.directional_solidification:dir_sol_manual_protocol_excel_parser'
     - 'ikz_plugin.czochralski:czochralski_schema'
     - 'ikz_plugin.czochralski:czochralski_multilog_parser'
-    
+
   exclude:
     - 'parsers/nexus'
 
@@ -111,8 +111,8 @@ plugins:
     #  python_package: hall.measurement_parser
     # parsers/hall_lakeshore/instrument:
     #  python_package: hall.instrument_parser
-    # parsers/laytec_epitt:
-    #   python_package: laytec_epitt
+    parsers/laytec_epitt:
+      python_package: laytec_epitt
     # schemas/ikz:
     #   python_package: ikz_plugin
     # schemas/ikz/pld:
