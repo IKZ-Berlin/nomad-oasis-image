@@ -78,7 +78,7 @@ plugins:
     # - 'parsers/movpe_1_constant_parameters'
     # - 'parsers/substrates_IKZ'
     # - 'parsers/directional_solidification'
-     - 'parsers/uv_vis_nir_transmission'
+    - 'parsers/uv_vis_nir_transmission'
     # - 'schemas/fz_feed_rod'
   exclude:
     - 'parsers/nexus'
