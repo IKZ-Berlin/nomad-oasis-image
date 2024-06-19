@@ -92,6 +92,9 @@ plugins:
     - 'ikz_plugin.directional_solidification:dir_sol_manual_protocol_excel_parser'
     - 'ikz_plugin.czochralski:czochralski_schema'
     - 'ikz_plugin.czochralski:czochralski_multilog_parser'
+    - 'nomad_ikz_raman.parsers:ramanparser'
+    - 'nomad_ikz_raman.schema_packages:raman'
+    - 'nomad_ikz_fz.schema_packages:mypackage'
 
   exclude:
     - 'parsers/nexus'
