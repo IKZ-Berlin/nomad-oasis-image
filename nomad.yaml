@@ -68,7 +68,7 @@ plugins:
     - 'schemas/RTGSIMS'
     # - 'parsers/hall_lakeshore/measurement'
     # - 'parsers/hall_lakeshore/instrument'
-    - 'parsers/laytec_epitt'
+    # - 'parsers/laytec_epitt'
     # - 'schemas/ikz'
     # - 'schemas/ikz/pld'
     # - 'schemas/characterization_IKZ'
@@ -83,10 +83,10 @@ plugins:
     - 'ikz_plugin.general:general_schema'
     - 'ikz_plugin.characterization:characterization_schema'
     - 'ikz_plugin.pld:pld_schema'
-    # - 'ikz_plugin.movpe:movpe_schema'
-    # - 'ikz_plugin.movpe.movpe2.growth_excel:movpe2_growth_excel_parser'
-    # - 'ikz_plugin.movpe.movpe1.growth_excel:movpe1_growth_excel_parser'
-    # - 'ikz_plugin.movpe.substrate:substrate_excel_parser'
+    - 'ikz_plugin.movpe:movpe_schema'
+    - 'ikz_plugin.movpe.movpe2.growth_excel:movpe2_growth_excel_parser'
+    - 'ikz_plugin.movpe.movpe1.growth_excel:movpe1_growth_excel_parser'
+    - 'ikz_plugin.movpe.substrate:substrate_excel_parser'
     - 'ikz_plugin.mbe:mbe_schema'
     - 'ikz_plugin.directional_solidification:dir_sol_schema'
     - 'ikz_plugin.directional_solidification:dir_sol_manual_protocol_excel_parser'
@@ -95,6 +95,8 @@ plugins:
     - 'nomad_ikz_raman.parsers:ramanparser'
     - 'nomad_ikz_raman.schema_packages:raman'
     - 'nomad_ikz_fz.schema_packages:mypackage'
+    - 'laytec_epitt_plugin:laytec_schema'
+    - 'laytec_epitt_plugin:laytec_parser'
 
   exclude:
     - 'parsers/nexus'
@@ -114,8 +116,8 @@ plugins:
     #  python_package: hall.measurement_parser
     # parsers/hall_lakeshore/instrument:
     #  python_package: hall.instrument_parser
-    parsers/laytec_epitt:
-      python_package: laytec_epitt
+    # parsers/laytec_epitt:
+    #  python_package: laytec_epitt
     # schemas/ikz:
     #   python_package: ikz_plugin
     # schemas/ikz/pld:
