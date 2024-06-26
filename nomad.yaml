@@ -95,6 +95,7 @@ plugins:
     - 'nomad_ikz_raman.parsers:ramanparser'
     - 'nomad_ikz_raman.schema_packages:raman'
     - 'nomad_ikz_fz.schema_packages:mypackage'
+    - 'nomad_ikz_omega_theta_xrd.schema_packages:omegascan'
     - 'laytec_epitt_plugin:laytec_schema'
     - 'laytec_epitt_plugin:laytec_parser'
 
