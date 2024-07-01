@@ -66,20 +66,7 @@ plugins:
     - 'parsers/nomad_measurements/xrd'
     - 'schemas/nomad_analysis'
     - 'schemas/RTGSIMS'
-    # - 'parsers/hall_lakeshore/measurement'
-    # - 'parsers/hall_lakeshore/instrument'
-    # - 'parsers/laytec_epitt'
-    # - 'schemas/ikz'
-    # - 'schemas/ikz/pld'
-    # - 'schemas/characterization_IKZ'
-    # - 'parsers/czochralski_IKZ'
-    # - 'parsers/movpe_2_growth_excel'
-    # - 'parsers/movpe_1_growth_excel'
-    # - 'parsers/movpe_1_constant_parameters'
-    # - 'parsers/substrates_IKZ'
-    # - 'parsers/directional_solidification'
     - 'parsers/uv_vis_nir_transmission'
-    # - 'schemas/fz_feed_rod'
     - 'ikz_plugin.general:general_schema'
     - 'ikz_plugin.characterization:characterization_schema'
     - 'ikz_plugin.pld:pld_schema'
@@ -96,6 +83,9 @@ plugins:
     - 'nomad_ikz_raman.schema_packages:raman'
     - 'nomad_ikz_fz.schema_packages:mypackage'
     - 'nomad_ikz_omega_theta_xrd.schema_packages:omegascan'
+    - "lakeshore_nomad_plugin.hall:hall_schema"
+    - "lakeshore_nomad_plugin.hall.instrument_parser:hall_instrument_parser"
+    - "lakeshore_nomad_plugin.hall.measurement_parser:hall_measurement_parser"
     - 'laytec_epitt_plugin:laytec_schema'
     - 'laytec_epitt_plugin:laytec_parser'
 
@@ -113,34 +103,8 @@ plugins:
       python_package: nomad_measurements.xrd.parser
     schemas/nomad_analysis:
       python_package: nomad_analysis
-    # parsers/hall_lakeshore/measurement:
-    #  python_package: hall.measurement_parser
-    # parsers/hall_lakeshore/instrument:
-    #  python_package: hall.instrument_parser
-    # parsers/laytec_epitt:
-    #  python_package: laytec_epitt
-    # schemas/ikz:
-    #   python_package: ikz_plugin
-    # schemas/ikz/pld:
-    #   python_package: ikz_plugin.pld
-    # schemas/characterization_IKZ:
-    #   python_package: ikz_plugin.characterization
-    # parsers/czochralski_IKZ:
-    #   python_package: ikz_plugin.czochralski
-    # parsers/movpe_2_growth_excel:
-    #   python_package: ikz_plugin.movpe.movpe2.growth_excel
-    # parsers/movpe_1_growth_excel:
-    #   python_package: ikz_plugin.movpe.movpe1.growth_excel
-    # parsers/movpe_1_constant_parameters:
-    #   python_package: ikz_plugin.movpe.movpe1.constant_parameters
-    # parsers/substrates_IKZ:
-    #  python_package: ikz_plugin.movpe.substrate
-    # parsers/directional_solidification:
-    #   python_package: ikz_plugin.directional_solidification
     parsers/uv_vis_nir_transmission:
       python_package: uv_vis_nir_transmission.parser
-    # schemas/fz_feed_rod:
-     # python_package: nomad_ikz_fz
 ui:
   apps:
     # Configures which apps to show. Note that the app for 'entries' (which
