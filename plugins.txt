@@ -6,7 +6,7 @@ git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@ebb65e87
 git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@245a82ddc24da5f8aaa79164e6669c18c2bc1572#subdirectory=transmission/transmission_plugin/uv_vis_nir_transmission_plugin
 git+https://github.com/IKZ-Berlin/lakeshore-nomad-plugin.git@main
 git+https://github.com/IKZ-Berlin/laytec_epitt_nomad_plugin.git@main
-git+https://github.com/IKZ-Berlin/ikz-fz-nomad-plugin.git
+git+https://github.com/IKZ-Berlin/ikz-fz-nomad-plugin.git 
 git+https://github.com/IKZ-Berlin/IKZ_raman.git
 git+https://github.com/IKZ-Berlin/ikz-omega-theta-xrd.git
 statsmodels
