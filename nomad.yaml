@@ -83,6 +83,7 @@ plugins:
     - 'nomad_ikz_raman.schema_packages:raman'
     - 'nomad_ikz_fz.schema_packages:mypackage'
     - 'nomad_ikz_omega_theta_xrd.schema_packages:omegascan'
+    - 'nomad_ikz_omega_theta_xrd.parsers:omegathetaxrdparser'
     - "lakeshore_nomad_plugin.hall:hall_schema"
     - "lakeshore_nomad_plugin.hall.instrument_parser:hall_instrument_parser"
     - "lakeshore_nomad_plugin.hall.measurement_parser:hall_measurement_parser"
