@@ -87,7 +87,7 @@ plugins:
     - "lakeshore_nomad_plugin.hall:hall_schema"
     - "lakeshore_nomad_plugin.hall.instrument_parser:hall_instrument_parser"
     - "lakeshore_nomad_plugin.hall.measurement_parser:hall_measurement_parser"
-    - 'laytec_epitt_plugin:laytec_schema'
+    - 'laytec_epitt_plugin:laytec_schema' 
     - 'laytec_epitt_plugin:laytec_parser'
 
   exclude:
