@@ -1,4 +1,4 @@
-git+https://github.com/FAIRmat-NFDI/nomad-material-processing.git@0e617a9ae53b38cc89cc608506f868ac6daee4ba # main branch
+git+https://github.com/FAIRmat-NFDI/nomad-material-processing.git@18924c13b9c3477ff1e0fb4601e60dfc2a35cbf6 # main branch
 git+https://github.com/FAIRmat-NFDI/nomad-measurements.git@f19c0e3b175613ec026ef36c849af3474c42cf52 # main branch
 git+https://github.com/FAIRmat-NFDI/nomad-analysis.git@dad42da6d606e0d20f98bce446e74937f5d3e0d5 # develop branch
 git+https://github.com/FAIRmat-NFDI/AreaA-data_modeling_and_schemas.git@8eb4856cd6c14ee3af812cf24468dd46ef289e8a#subdirectory=IKZ_plugin
