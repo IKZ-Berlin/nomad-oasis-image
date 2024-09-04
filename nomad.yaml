@@ -61,24 +61,33 @@ plugins:
   # loaded. Many build in plugins require more dependencies. Install nomad-lab[parsing]
   # to make all default plugins work.
   include:
-    - 'schemas/nomad_material_processing'
-    - 'schemas/nomad_measurements'
-    - 'parsers/nomad_measurements/xrd'
-    - 'schemas/nomad_analysis'
-    - 'schemas/RTGSIMS'
-    - 'parsers/uv_vis_nir_transmission'
-    - 'ikz_plugin.general:general_schema'
-    - 'ikz_plugin.characterization:characterization_schema'
-    - 'ikz_plugin.pld:pld_schema'
-    - 'ikz_plugin.movpe:movpe_schema'
-    - 'ikz_plugin.movpe.movpe2.growth_excel:movpe2_growth_excel_parser'
-    - 'ikz_plugin.movpe.movpe1.growth_excel:movpe1_growth_excel_parser'
-    - 'ikz_plugin.movpe.substrate:substrate_excel_parser'
-    - 'ikz_plugin.mbe:mbe_schema'
-    - 'ikz_plugin.directional_solidification:dir_sol_schema'
-    - 'ikz_plugin.directional_solidification:dir_sol_manual_protocol_excel_parser'
-    - 'ikz_plugin.czochralski:czochralski_schema'
-    - 'ikz_plugin.czochralski:czochralski_multilog_parser'
+    - "nomad_material_processing:schema"
+    - "nomad_material_processing.solution:schema"
+    - "nomad_material_processing.vapor_deposition.cvd:schema"
+    - "nomad_material_processing.vapor_deposition.pvd:schema"
+    - "nomad_material_processing.vapor_deposition.pvd:mbe_schema"
+    - "nomad_material_processing.vapor_deposition.pvd:pld_schema"
+    - "nomad_material_processing.vapor_deposition.pvd:sputtering_schema"
+    - "nomad_material_processing.vapor_deposition.pvd:thermal_schema"
+    - "nomad_measurements.general:schema"
+    - "nomad_measurements.xrd:schema"
+    - "nomad_measurements.xrd:parser"
+    - "nomad_measurements.transmission:schema"
+    - "nomad_measurements.transmission:parser"
+    - "nomad_analysis.general:schema"
+    - "nomad_analysis.jupyter:schema"
+    - "ikz_plugin.general:schema"
+    - "ikz_plugin.characterization:schema"
+    - "ikz_plugin.pld:schema"
+    - "ikz_plugin.movpe:schema"
+    - "ikz_plugin.movpe.movpe2.growth_excel:parser"
+    - "ikz_plugin.movpe.movpe1.growth_excel:parser"
+    - "ikz_plugin.movpe.substrate:parser"
+    - "ikz_plugin.mbe:schema"
+    - "ikz_plugin.directional_solidification:schema"
+    - "ikz_plugin.directional_solidification:excel_parser"
+    - "ikz_plugin.czochralski:schema"
+    - "ikz_plugin.czochralski:parser"
     - 'nomad_ikz_raman.parsers:ramanparser'
     - 'nomad_ikz_raman.schema_packages:raman'
     - 'nomad_ikz_fz.schema_packages:mypackage'
@@ -89,6 +98,8 @@ plugins:
     - "lakeshore_nomad_plugin.hall.measurement_parser:hall_measurement_parser"
     - 'laytec_epitt_plugin:laytec_schema' 
     - 'laytec_epitt_plugin:laytec_parser'
+    - 'schemas/RTGSIMS'
+    - 'parsers/uv_vis_nir_transmission'
 
   exclude:
     - 'parsers/nexus'
