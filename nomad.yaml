@@ -98,17 +98,17 @@ plugins:
     - "lakeshore_nomad_plugin.hall.measurement_parser:hall_measurement_parser"
     - 'laytec_epitt_plugin:laytec_schema' 
     - 'laytec_epitt_plugin:laytec_parser'
-    - 'schemas/RTGSIMS'
-    - 'parsers/uv_vis_nir_transmission'
+    # - 'schemas/RTGSIMS'
+    # - 'parsers/uv_vis_nir_transmission'
 
   exclude:
     - 'parsers/nexus'
 
-  options:
-    schemas/RTGSIMS:  
-      python_package: nomadschemartgsims
-    parsers/uv_vis_nir_transmission:
-      python_package: uv_vis_nir_transmission.parser
+  # options:
+  #   schemas/RTGSIMS:  
+  #     python_package: nomadschemartgsims
+  #   parsers/uv_vis_nir_transmission:
+  #     python_package: uv_vis_nir_transmission.parser
 ui:
   apps:
     # Configures which apps to show. Note that the app for 'entries' (which
