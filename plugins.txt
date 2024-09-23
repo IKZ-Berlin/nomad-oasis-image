@@ -10,4 +10,5 @@ git+https://github.com/IKZ-Berlin/ikz-fz-nomad-plugin.git@5812067071718d5e2b0602
 git+https://github.com/IKZ-Berlin/IKZ_raman.git@ece35d217321135d09dc16e317aacc1a2399fbef
 git+https://github.com/IKZ-Berlin/ikz-omega-theta-xrd.git@main 
 statsmodels 
+
  
